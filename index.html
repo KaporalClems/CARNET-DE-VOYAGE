@@ -12,6 +12,20 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden; /* Pour éviter les barres de défilement si la vidéo est plus grande que la fenêtre */
+        }
+        #background-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: -1;
+            object-fit: cover;
         }
         .modal-overlay {
             display: none;
@@ -40,7 +54,13 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen text-gray-800" style="background-image: url('https://images.unsplash.com/photo-1549488344-9331002220d9?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center;">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen text-gray-800">
+    <!-- Vidéo en arrière-plan -->
+    <video autoplay muted loop playsinline id="background-video">
+        <source src="Destination Sud Pros 2025.mp4" type="video/mp4">
+        Votre navigateur ne prend pas en charge la balise vidéo.
+    </video>
+
     <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl max-w-lg w-full text-center transform transition-all duration-300 hover:scale-105">
         <!-- Logo -->
         <img src="https://srias.re/wp-content/uploads/2020/12/Destination-Sud-Reunion-png-1-min.png" alt="Destination Sud Réunion Logo" class="mx-auto h-24 mb-6 transition-all duration-300 hover:scale-110">
