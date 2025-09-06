@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .bg-top-bar {
+            background-color: #007a82;
+            background-image: linear-gradient(to bottom, #007a82, #005f65);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+        .card-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .floating-btn {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .nav-icon {
+            transition: transform 0.2s ease-in-out;
+        }
+        .nav-icon.active {
+            color: #007a82;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-[#f0f4f8] min-h-screen flex flex-col">
+
+    <!-- Top Bar & Search -->
+    <header class="bg-top-bar text-white p-6 rounded-b-3xl">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center space-x-4">
+                <div class="relative w-12 h-12 rounded-full overflow-hidden border-2 border-white">
+                    <img src="https://placehold.co/100x100/A08F5A/FFFFFF?text=AS" alt="Profil de l'utilisateur" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold">Bonjour Anne-Sophie</h1>
+                    <div class="text-sm font-light flex items-center space-x-2 mt-1">
+                        <span><i class="fas fa-signal"></i> Niveau 7</span>
+                        <span><i class="fas fa-gem"></i> 25 totems</span>
+                    </div>
+                </div>
+            </div>
+            <button class="text-white text-2xl"><i class="fas fa-bell"></i></button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative w-full">
+            <input type="text" placeholder="Ville, province ou titre de la chasse" class="w-full p-3 pl-12 pr-12 rounded-full text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-white">
+            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <button class="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 focus:outline-none">
+                <i class="fas fa-sliders-h"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-4 overflow-y-auto pb-20">
+
+        <!-- Catégories de chasse (horizontal scroll) -->
+        <div class="mt-4 flex space-x-4 overflow-x-auto no-scrollbar">
+            <button class="flex-shrink-0 px-6 py-2 bg-white rounded-full text-gray-700 text-sm font-semibold border border-gray-200 shadow-md">
+                <i class="fas fa-heart mr-2"></i>Mes favoris
+            </button>
+            <button class="flex-shrink-0 px-6 py-2 bg-white rounded-full text-gray-700 text-sm font-semibold border border-gray-200 shadow-md">
+                <i class="fas fa-hourglass-end mr-2"></i>Dernière chance
+            </button>
+            <button class="flex-shrink-0 px-6 py-2 bg-white rounded-full text-gray-700 text-sm font-semibold border border-gray-200 shadow-md">
+                <i class="fas fa-star mr-2"></i>Les mieux notés
+            </button>
+            <button class="flex-shrink-0 px-6 py-2 bg-white rounded-full text-gray-700 text-sm font-semibold border border-gray-200 shadow-md">
+                <i class="fas fa-map-marked-alt mr-2"></i>Près de moi
+            </button>
+        </div>
+
+        <!-- Section des nouveautés -->
+        <section class="mt-8">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Les dernières nouveautés</h2>
+            <div class="space-y-6">
+                <!-- Carte de nouveauté -->
+                <div class="bg-white rounded-xl card-shadow overflow-hidden">
+                    <div class="relative">
+                        <img src="https://placehold.co/600x400/80C9C9/000000?text=Une+belle+vue" alt="Image de la nouveauté" class="w-full h-48 object-cover">
+                        <span class="absolute top-3 right-3 bg-white text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">Nouveau</span>
+                        <div class="absolute bottom-3 left-3 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full flex items-center space-x-2">
+                            <span><i class="fas fa-star"></i> 3.7/5</span>
+                            <span><i class="fas fa-comment"></i> 6</span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Petit patrimoine et secrets de village</h3>
+                        <p class="text-gray-500 text-sm mb-4"><i class="fas fa-map-marker-alt mr-1"></i> Beauvechain à 62.7 km</p>
+                        <div class="flex items-center justify-between text-sm text-gray-600">
+                            <div class="flex items-center space-x-2">
+                                <span class="bg-gray-200 px-3 py-1 rounded-full">4.6 km</span>
+                                <span class="bg-gray-200 px-3 py-1 rounded-full"><i class="far fa-clock"></i> +/-1h45</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 rounded-full bg-yellow-400"></div>
+                                <div class="w-6 h-6 rounded-full bg-blue-400"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section des chasses au trésor -->
+        <section class="mt-8">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Les chasses populaires</h2>
+            <!-- Les chasses populaires -->
+             <div class="space-y-6">
+                 <!-- Carte de chasse populaire -->
+                 <div class="bg-white rounded-xl card-shadow overflow-hidden">
+                     <div class="relative">
+                         <img src="https://placehold.co/600x400/96A1C4/000000?text=Une+plage+magnifique" alt="Image de la chasse populaire" class="w-full h-48 object-cover">
+                         <span class="absolute top-3 right-3 bg-white text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">Populaire</span>
+                         <div class="absolute bottom-3 left-3 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full flex items-center space-x-2">
+                             <span><i class="fas fa-star"></i> 4.9/5</span>
+                             <span><i class="fas fa-comment"></i> 124</span>
+                         </div>
+                     </div>
+                     <div class="p-4">
+                         <h3 class="text-xl font-bold text-gray-800 mb-2">Les trésors cachés de la côte</h3>
+                         <p class="text-gray-500 text-sm mb-4"><i class="fas fa-map-marker-alt mr-1"></i> Saint-Leu à 15.2 km</p>
+                         <div class="flex items-center justify-between text-sm text-gray-600">
+                             <div class="flex items-center space-x-2">
+                                 <span class="bg-gray-200 px-3 py-1 rounded-full">2.1 km</span>
+                                 <span class="bg-gray-200 px-3 py-1 rounded-full"><i class="far fa-clock"></i> +/-30 min</span>
+                             </div>
+                             <div class="flex items-center space-x-2">
+                                 <div class="w-6 h-6 rounded-full bg-green-400"></div>
+                                 <div class="w-6 h-6 rounded-full bg-red-400"></div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+        </section>
+    </main>
+
+    <!-- Floating Action Button -->
+    <button class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-[#007a82] text-white py-3 px-6 rounded-full font-semibold floating-btn transition-transform duration-200 hover:scale-105">
+        <i class="fas fa-map-marked-alt mr-2"></i> Voir la carte
+    </button>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-4 flex justify-around items-center rounded-t-3xl shadow-xl z-50">
+        <button class="flex flex-col items-center text-gray-400 nav-icon active">
+            <i class="fas fa-compass text-2xl"></i>
+            <span class="text-xs mt-1">Découvrir</span>
+        </button>
+        <button class="flex flex-col items-center text-gray-400 nav-icon">
+            <i class="fas fa-users text-2xl"></i>
+            <span class="text-xs mt-1">Commu.</span>
+        </button>
+        <button class="flex flex-col items-center text-gray-400 nav-icon">
+            <i class="fas fa-user-circle text-2xl"></i>
+            <span class="text-xs mt-1">Profil</span>
+        </button>
+        <button class="flex flex-col items-center text-gray-400 nav-icon">
+            <i class="fas fa-gift text-2xl"></i>
+            <span class="text-xs mt-1">Cadeaux</span>
+        </button>
+        <button class="flex flex-col items-center text-gray-400 nav-icon">
+            <i class="fas fa-ellipsis-h text-2xl"></i>
+            <span class="text-xs mt-1">Plus</span>
+        </button>
+    </nav>
+
+</body>
+</html>
