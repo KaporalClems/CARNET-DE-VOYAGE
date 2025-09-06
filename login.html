@@ -170,18 +170,6 @@
                 </form>
                 <div id="status-message" class="mt-4 p-3 rounded-md hidden text-center font-medium"></div>
             </div>
-
-            <!-- La vue du tableau de bord, affichée après connexion/inscription -->
-            <div id="dashboard-view" class="hidden">
-                <h2 class="text-3xl font-bold text-gray-800 text-center mb-4">Bienvenue, <span id="user-display-name">Utilisateur</span> !</h2>
-                <p class="text-gray-600 text-center mb-6">Connecté en tant que: <span id="user-email-display"></span></p>
-                <div class="bg-gray-100 p-6 rounded-lg mb-6">
-                    <p class="text-gray-700 text-lg mb-2">
-                        Bienvenue dans votre espace personnel du **Carnet de voyage du Sud**. Vous pouvez maintenant commencer à créer et organiser vos carnets de voyage.
-                    </p>
-                </div>
-                <button id="logout-button" class="w-full bg-red-600 text-white p-3 rounded-md font-semibold hover:bg-red-700 transition-colors duration-200 mt-4">Déconnexion</button>
-            </div>
         </div>
     </main>
 
@@ -223,13 +211,12 @@
     <!-- Script JavaScript -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, onAuthStateChanged, signOut, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         document.addEventListener('DOMContentLoaded', async () => {
             // Configuration de Firebase (fournie par l'environnement)
             const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
             const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
             
             let app;
@@ -243,10 +230,6 @@
             const signupForm = document.getElementById('signup-form');
             const formTitle = document.getElementById('form-title');
             const authView = document.getElementById('auth-view');
-            const dashboardView = document.getElementById('dashboard-view');
-            const userDisplayName = document.getElementById('user-display-name');
-            const userEmailDisplay = document.getElementById('user-email-display');
-            const logoutButton = document.getElementById('logout-button');
             const statusMessage = document.getElementById('status-message');
             const profilRadios = document.querySelectorAll('input[name="profil"]');
             const voyageurFields = document.getElementById('voyageur-fields');
@@ -269,7 +252,6 @@
                 } else {
                     await signInAnonymously(auth);
                 }
-
             } catch (error) {
                 console.error("Erreur d'initialisation de Firebase ou de connexion:", error);
                 showStatusMessage('Erreur: Firebase n\'a pas pu être initialisé.', 'bg-red-100 text-red-700');
@@ -359,54 +341,8 @@
                 }
 
                 try {
-                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                    const user = userCredential.user;
-
-                    const formData = new FormData(signupForm);
-                    const data = {};
-                    const checkedVoyageurInterets = [];
-                    const checkedVoyageurVoyages = [];
-                    const checkedActivites = [];
-                    const profil = formData.get('profil');
-
-                    // Récupère toutes les données du formulaire, y compris les checkboxes non cochées
-                    const inputs = signupForm.querySelectorAll('input, textarea');
-                    inputs.forEach(input => {
-                        const name = input.name;
-                        if (!name) return;
-
-                        if (input.type === 'checkbox') {
-                            if (input.checked) {
-                                if (name === 'droit_image' || name === 'certifie_regle' || name === 'is_also_voyageur') {
-                                    data[name] = true;
-                                } else if (name.endsWith('[]')) {
-                                    if (name === 'voyageur_interets[]') checkedVoyageurInterets.push(input.value);
-                                    if (name === 'voyageur_voyage[]') checkedVoyageurVoyages.push(input.value);
-                                    if (name === 'activites[]') checkedActivites.push(input.value);
-                                }
-                            } else {
-                                if (name === 'droit_image' || name === 'certifie_regle' || name === 'is_also_voyageur') {
-                                    // Pas besoin de faire quoi que ce soit si la checkbox est décochée, car elle n'existe pas dans le formulaire
-                                    // La valeur par défaut sera `false` si nous le voulons
-                                }
-                            }
-                        } else if (input.type !== 'radio') {
-                            data[name] = input.value;
-                        }
-                    });
-                    data['profil'] = profil;
-                    data['voyageur_interets'] = checkedVoyageurInterets;
-                    data['voyageur_voyage'] = checkedVoyageurVoyages;
-                    data['activites'] = checkedActivites;
-
-                    delete data.password; // Ne pas stocker le mot de passe dans Firestore
-
-                    // Chemin Firestore corrigé
-                    const userDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'user-info');
-                    await setDoc(userDocRef, data);
-
-                    showStatusMessage('Inscription réussie ! Connexion en cours...', 'bg-green-100 text-green-700');
-
+                    await createUserWithEmailAndPassword(auth, email, password);
+                    showStatusMessage('Inscription réussie ! Redirection...', 'bg-green-100 text-green-700');
                 } catch (error) {
                     console.error('Erreur lors de l\'inscription:', error);
                     showStatusMessage(`Erreur d'inscription: ${error.message}`, 'bg-red-100 text-red-700');
@@ -428,7 +364,7 @@
 
                 try {
                     await signInWithEmailAndPassword(auth, email, password);
-                    showStatusMessage('Connexion réussie !', 'bg-green-100 text-green-700');
+                    showStatusMessage('Connexion réussie ! Redirection...', 'bg-green-100 text-green-700');
                 } catch (error) {
                     console.error('Erreur lors de la connexion:', error);
                     let message = 'Erreur de connexion.';
@@ -441,22 +377,15 @@
                 }
             });
 
-            // Gère la déconnexion de l'utilisateur
-            logoutButton.addEventListener('click', async () => {
-                await signOut(auth);
-            });
-
             // Listener pour les changements d'état d'authentification
             onAuthStateChanged(auth, (user) => {
                 if (user) {
-                    authView.classList.add('hidden');
-                    dashboardView.classList.remove('hidden');
-                    userEmailDisplay.textContent = user.email || 'Anonyme';
-                    userDisplayName.textContent = user.displayName || 'Utilisateur';
+                    // Redirige vers la page d'accueil si l'utilisateur est connecté
+                    window.location.href = 'accueil.html';
                 } else {
+                    // Affiche le formulaire de connexion si l'utilisateur est déconnecté
                     authView.classList.remove('hidden');
-                    dashboardView.classList.add('hidden');
-                    toggleForms(true); // Retourne à l'affichage du formulaire de connexion par défaut
+                    toggleForms(true); 
                 }
             });
         });
