@@ -27,133 +27,171 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
         .floating-btn {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
         }
-        .nav-icon {
-            transition: transform 0.2s ease-in-out;
+        @keyframes pulse {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
-        .nav-icon.active {
-            color: #007a82;
-            transform: scale(1.1);
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.7);
         }
     </style>
 </head>
-<body class="bg-[#f0f4f8] min-h-screen flex flex-col">
+<body class="bg-[#f2f2f2] pb-20">
 
-    <!-- Top Bar & Search -->
-    <header class="bg-top-bar text-white p-6 rounded-b-3xl">
-        <div class="flex items-center justify-between mb-6">
-            <div class="flex items-center space-x-4">
-                <div class="relative w-12 h-12 rounded-full overflow-hidden border-2 border-white">
-                    <img src="https://placehold.co/100x100/A08F5A/FFFFFF?text=AS" alt="Profil de l'utilisateur" class="w-full h-full object-cover">
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold">Bonjour Anne-Sophie</h1>
-                    <div class="text-sm font-light flex items-center space-x-2 mt-1">
-                        <span><i class="fas fa-signal"></i> Niveau 7</span>
-                        <span><i class="fas fa-gem"></i> 25 totems</span>
-                    </div>
-                </div>
+    <!-- Header Section -->
+    <header class="w-full flex justify-between items-center bg-top-bar text-white p-4 rounded-b-3xl shadow-lg relative">
+        <div class="flex items-center space-x-4">
+            <img src="https://via.placeholder.com/150/007a82/FFFFFF?text=P" alt="Profile Picture" class="w-16 h-16 rounded-full border-2 border-white shadow">
+            <!-- Conteneur pour l'identifiant de l'utilisateur -->
+            <div class="flex flex-col">
+                <h1 class="text-xl font-bold" id="user-id-display"></h1>
             </div>
-            <button class="text-white text-2xl"><i class="fas fa-bell"></i></button>
         </div>
-
-        <!-- Search Bar -->
-        <div class="relative w-full">
-            <input type="text" placeholder="Ville, province ou titre de la chasse" class="w-full p-3 pl-12 pr-12 rounded-full text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-white">
-            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-            <button class="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 focus:outline-none">
-                <i class="fas fa-sliders-h"></i>
-            </button>
-        </div>
+        <i class="fas fa-bell text-2xl"></i>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-grow p-4 overflow-y-auto pb-20">
-
-        <!-- Catégories de chasse (horizontal scroll) -->
-        <div class="mt-4 flex space-x-4 overflow-x-auto no-scrollbar">
-            <button class="flex-shrink-0 px-6 py-2 bg-white rounded-full text-gray-700 text-sm font-semibold border border-gray-200 shadow-md">
-                <i class="fas fa-heart mr-2"></i>Mes favoris
-            </button>
-            <button class="flex-shrink-0 px-6 py-2 bg-white rounded-full text-gray-700 text-sm font-semibold border border-gray-200 shadow-md">
-                <i class="fas fa-hourglass-end mr-2"></i>Dernière chance
-            </button>
-            <button class="flex-shrink-0 px-6 py-2 bg-white rounded-full text-gray-700 text-sm font-semibold border border-gray-200 shadow-md">
-                <i class="fas fa-star mr-2"></i>Les mieux notés
-            </button>
-            <button class="flex-shrink-0 px-6 py-2 bg-white rounded-full text-gray-700 text-sm font-semibold border border-gray-200 shadow-md">
-                <i class="fas fa-map-marked-alt mr-2"></i>Près de moi
-            </button>
-        </div>
-
-        <!-- Section des nouveautés -->
-        <section class="mt-8">
-            <h2 class="text-lg font-bold text-gray-800 mb-4">Les dernières nouveautés</h2>
-            <div class="space-y-6">
-                <!-- Carte de nouveauté -->
-                <div class="bg-white rounded-xl card-shadow overflow-hidden">
-                    <div class="relative">
-                        <img src="https://placehold.co/600x400/80C9C9/000000?text=Une+belle+vue" alt="Image de la nouveauté" class="w-full h-48 object-cover">
-                        <span class="absolute top-3 right-3 bg-white text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">Nouveau</span>
-                        <div class="absolute bottom-3 left-3 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full flex items-center space-x-2">
-                            <span><i class="fas fa-star"></i> 3.7/5</span>
-                            <span><i class="fas fa-comment"></i> 6</span>
+    <!-- Main Content Section -->
+    <main class="p-4">
+        <!-- Section "Mes carnets" -->
+        <section class="mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800">Mes carnets</h2>
+                <a href="#" class="text-[#007a82] font-semibold text-sm">Voir tout</a>
+            </div>
+            <div class="flex space-x-4 overflow-x-auto no-scrollbar pb-2">
+                <!-- Exemple de carte de carnet -->
+                <div class="flex-shrink-0 w-48 bg-white rounded-xl card-shadow overflow-hidden">
+                    <img src="https://via.placeholder.com/400x300/e2e8f0/4a5568?text=Mon+Carnet+1" alt="Carnet de voyage" class="w-full h-32 object-cover">
+                    <div class="p-3">
+                        <h3 class="font-semibold text-gray-800 text-sm">Circuit des plages</h3>
+                        <p class="text-xs text-gray-500 mt-1">St-Gilles les Bains, La Saline...</p>
+                        <div class="flex items-center text-xs text-gray-400 mt-2">
+                            <i class="fas fa-calendar-alt mr-1"></i>
+                            <span>12-18 mai</span>
                         </div>
                     </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Petit patrimoine et secrets de village</h3>
-                        <p class="text-gray-500 text-sm mb-4"><i class="fas fa-map-marker-alt mr-1"></i> Beauvechain à 62.7 km</p>
-                        <div class="flex items-center justify-between text-sm text-gray-600">
-                            <div class="flex items-center space-x-2">
-                                <span class="bg-gray-200 px-3 py-1 rounded-full">4.6 km</span>
-                                <span class="bg-gray-200 px-3 py-1 rounded-full"><i class="far fa-clock"></i> +/-1h45</span>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <div class="w-6 h-6 rounded-full bg-yellow-400"></div>
-                                <div class="w-6 h-6 rounded-full bg-blue-400"></div>
-                            </div>
+                </div>
+
+                <!-- Nouvelle carte pour la collection de séminaires -->
+                <div id="seminars-card" class="flex-shrink-0 w-48 bg-white rounded-xl card-shadow overflow-hidden cursor-pointer">
+                    <img src="https://placehold.co/400x300/007a82/FFFFFF?text=Seminaires" alt="Séminaires" class="w-full h-32 object-cover">
+                    <div class="p-3">
+                        <h3 class="font-semibold text-gray-800 text-sm">Séminaires en collection</h3>
+                        <p class="text-xs text-gray-500 mt-1">Nouveautés et rencontres professionnelles</p>
+                        <div class="flex items-center text-xs text-gray-400 mt-2">
+                            <i class="fas fa-calendar-alt mr-1"></i>
+                            <span>Toute l'année</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section des chasses au trésor -->
-        <section class="mt-8">
-            <h2 class="text-lg font-bold text-gray-800 mb-4">Les chasses populaires</h2>
-            <!-- Les chasses populaires -->
-             <div class="space-y-6">
-                 <!-- Carte de chasse populaire -->
-                 <div class="bg-white rounded-xl card-shadow overflow-hidden">
-                     <div class="relative">
-                         <img src="https://placehold.co/600x400/96A1C4/000000?text=Une+plage+magnifique" alt="Image de la chasse populaire" class="w-full h-48 object-cover">
-                         <span class="absolute top-3 right-3 bg-white text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">Populaire</span>
-                         <div class="absolute bottom-3 left-3 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full flex items-center space-x-2">
-                             <span><i class="fas fa-star"></i> 4.9/5</span>
-                             <span><i class="fas fa-comment"></i> 124</span>
-                         </div>
-                     </div>
-                     <div class="p-4">
-                         <h3 class="text-xl font-bold text-gray-800 mb-2">Les trésors cachés de la côte</h3>
-                         <p class="text-gray-500 text-sm mb-4"><i class="fas fa-map-marker-alt mr-1"></i> Saint-Leu à 15.2 km</p>
-                         <div class="flex items-center justify-between text-sm text-gray-600">
-                             <div class="flex items-center space-x-2">
-                                 <span class="bg-gray-200 px-3 py-1 rounded-full">2.1 km</span>
-                                 <span class="bg-gray-200 px-3 py-1 rounded-full"><i class="far fa-clock"></i> +/-30 min</span>
-                             </div>
-                             <div class="flex items-center space-x-2">
-                                 <div class="w-6 h-6 rounded-full bg-green-400"></div>
-                                 <div class="w-6 h-6 rounded-full bg-red-400"></div>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
+        <!-- Section "Ma communauté" -->
+        <section class="mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800">Ma communauté</h2>
+                <a href="#" class="text-[#007a82] font-semibold text-sm">Voir tout</a>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <!-- Card "Explorateur.trice" -->
+                <div class="bg-white p-4 rounded-xl card-shadow overflow-hidden text-center">
+                    <i class="fas fa-compass text-4xl text-[#007a82] mb-3"></i>
+                    <h3 class="font-bold text-gray-800 text-lg">Explorateur.trice</h3>
+                </div>
+                <!-- Card "Vacancier.ère" -->
+                <div class="bg-white p-4 rounded-xl card-shadow overflow-hidden text-center">
+                    <i class="fas fa-umbrella-beach text-4xl text-[#007a82] mb-3"></i>
+                    <h3 class="font-bold text-gray-800 text-lg">Vacancier.ère</h3>
+                </div>
+                <!-- Card "Passionné.e" -->
+                <div class="bg-white p-4 rounded-xl card-shadow overflow-hidden text-center">
+                    <i class="fas fa-heart text-4xl text-[#007a82] mb-3"></i>
+                    <h3 class="font-bold text-gray-800 text-lg">Passionné.e</h3>
+                </div>
+                <!-- Card "Congressiste" -->
+                <div class="bg-white p-4 rounded-xl card-shadow overflow-hidden text-center">
+                    <i class="fas fa-briefcase text-4xl text-[#007a82] mb-3"></i>
+                    <h3 class="font-bold text-gray-800 text-lg">Congressiste</h3>
+                </div>
+                <!-- Card "Excursionniste" -->
+                <div class="bg-white p-4 rounded-xl card-shadow overflow-hidden text-center">
+                    <i class="fas fa-route text-4xl text-[#007a82] mb-3"></i>
+                    <h3 class="font-bold text-gray-800 text-lg">Excursionniste</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section "Mon parcours de voyage" -->
+        <section class="mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800">Mon parcours de voyage</h2>
+                <a href="#" class="text-[#007a82] font-semibold text-sm">Voir tout</a>
+            </div>
+            <div class="bg-white p-4 rounded-xl card-shadow">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-semibold text-gray-700">Exploration</span>
+                    <span class="text-xs text-[#007a82] font-semibold">50%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div class="bg-[#007a82] h-2.5 rounded-full" style="width: 50%;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section "Les rubriques" -->
+        <section class="mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800">Les rubriques</h2>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <!-- Card "Coup de coeur" -->
+                <div class="relative bg-white p-4 rounded-xl card-shadow overflow-hidden group">
+                    <div class="absolute top-2 right-2 text-red-500 text-lg">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <i class="fas fa-camera text-4xl text-[#007a82] mb-3"></i>
+                    <h3 class="font-bold text-gray-800 text-lg">Reportages</h3>
+                    <p class="text-sm text-gray-500">Découvrez nos plus belles histoires en images.</p>
+                </div>
+                <!-- Card "Bonnes tables" -->
+                <div class="bg-white p-4 rounded-xl card-shadow overflow-hidden">
+                    <i class="fas fa-utensils text-4xl text-[#007a82] mb-3"></i>
+                    <h3 class="font-bold text-gray-800 text-lg">Bonnes tables</h3>
+                    <p class="text-sm text-gray-500">Nos meilleures adresses pour savourer le Sud.</p>
+                </div>
+                <!-- Card "Balades" -->
+                <div class="bg-white p-4 rounded-xl card-shadow overflow-hidden">
+                    <i class="fas fa-hiking text-4xl text-[#007a82] mb-3"></i>
+                    <h3 class="font-bold text-gray-800 text-lg">Balades</h3>
+                    <p class="text-sm text-gray-500">Tous les sentiers pour explorer la région.</p>
+                </div>
+                <!-- Card "Hébergements" -->
+                <div class="bg-white p-4 rounded-xl card-shadow overflow-hidden">
+                    <i class="fas fa-bed text-4xl text-[#007a82] mb-3"></i>
+                    <h3 class="font-bold text-gray-800 text-lg">Hébergements</h3>
+                    <p class="text-sm text-gray-500">Des lieux où se reposer, pour tous les goûts.</p>
+                </div>
+                <!-- Card "Activités" -->
+                <div class="bg-white p-4 rounded-xl card-shadow overflow-hidden">
+                    <i class="fas fa-running text-4xl text-[#007a82] mb-3"></i>
+                    <h3 class="font-bold text-gray-800 text-lg">Activités</h3>
+                    <p class="text-sm text-gray-500">Les meilleures activités de plein air.</p>
+                </div>
+                <!-- Card "Événements" -->
+                <div class="bg-white p-4 rounded-xl card-shadow overflow-hidden">
+                    <i class="fas fa-calendar-check text-4xl text-[#007a82] mb-3"></i>
+                    <h3 class="font-bold text-gray-800 text-lg">Événements</h3>
+                    <p class="text-sm text-gray-500">Festivals, concerts et événements à ne pas manquer.</p>
+                </div>
+            </div>
         </section>
     </main>
 
-    <!-- Floating Action Button -->
+    <!-- Floating Map Button -->
     <button class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-[#007a82] text-white py-3 px-6 rounded-full font-semibold floating-btn transition-transform duration-200 hover:scale-105">
         <i class="fas fa-map-marked-alt mr-2"></i> Voir la carte
     </button>
@@ -173,14 +211,124 @@
             <span class="text-xs mt-1">Profil</span>
         </button>
         <button class="flex flex-col items-center text-gray-400 nav-icon">
-            <i class="fas fa-gift text-2xl"></i>
-            <span class="text-xs mt-1">Cadeaux</span>
-        </button>
-        <button class="flex flex-col items-center text-gray-400 nav-icon">
-            <i class="fas fa-ellipsis-h text-2xl"></i>
-            <span class="text-xs mt-1">Plus</span>
+            <i class="fas fa-cog text-2xl"></i>
+            <span class="text-xs mt-1">Réglages</span>
         </button>
     </nav>
 
+    <!-- Modal pour les Séminaires -->
+    <div id="seminars-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay">
+        <div class="bg-white rounded-xl shadow-xl max-w-lg w-full p-6 relative card-shadow">
+            <!-- Bouton de fermeture -->
+            <button id="close-modal-btn" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl">
+                <i class="fas fa-times-circle"></i>
+            </button>
+
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Séminaires en collection</h2>
+
+            <!-- Carrousel d'images -->
+            <div class="relative w-full rounded-lg overflow-hidden mb-4">
+                <div id="carousel-images" class="flex transition-transform duration-300">
+                    <!-- Les images seront insérées par JavaScript -->
+                </div>
+                <!-- Boutons de navigation du carrousel -->
+                <button id="prev-btn" class="absolute top-1/2 left-2 -translate-y-1/2 bg-white rounded-full p-2 text-gray-800 hover:bg-gray-200 transition-colors">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button id="next-btn" class="absolute top-1/2 right-2 -translate-y-1/2 bg-white rounded-full p-2 text-gray-800 hover:bg-gray-200 transition-colors">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <!-- Description du séminaire -->
+            <div class="p-2">
+                <p class="text-sm text-gray-700 mb-2">
+                    Pour le séminaire annuel, notre chef d’entreprise avait choisi l’Etang Salé. Nous y avons travaillé le matin, en prolongeant les échanges lors des repas, de visites et d’activités : caris feu de bois, cours de cuisine créole, parcours à vélo à assistance électrique sur la voie verte entre océan et filaos, séance d’initiation au golf, quiz au Piton de la Croix à l’heure de l’apéritif et du coucher du soleil, plongée sous-marine et balade à cheval.
+                </p>
+                <p class="text-sm text-gray-700 mb-2">
+                    J’ai vraiment apprécié cet équilibre entre les temps de travail, si différents du quotidien, et les moments où nous avons profité des ambiances du SUD.
+                </p>
+                <p class="text-sm text-gray-700 mb-2">
+                    Avec la photo ci-contre, Marc, mon collègue, a capté un temps fort de sérénité et de complicité avec mon assistante, Léna, devant l’attachant Bassin Pirogue.
+                </p>
+                <p class="text-sm text-gray-700">
+                    Et pour l’an prochain, j’ai suggéré un séminaire sur le thème des hauteurs et des étoiles, aux Makes.
+                </p>
+                <p class="text-xs text-right italic text-gray-500 mt-4">- Léonore, cadre commerciale à Saint-Denis</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Script pour générer un ID aléatoire et mettre à jour le header et gérer la modale -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Génère un numéro d'ID aléatoire de 6 chiffres
+            const randomId = Math.floor(100000 + Math.random() * 900000);
+            
+            // Met à jour le texte du titre avec l'ID de l'utilisateur
+            const userIdDisplayElement = document.getElementById('user-id-display');
+            if (userIdDisplayElement) {
+                userIdDisplayElement.textContent = `ID: ${randomId}`;
+            }
+
+            // --- Gestion de la modale ---
+            const seminarsCard = document.getElementById('seminars-card');
+            const seminarsModal = document.getElementById('seminars-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const carouselImages = document.getElementById('carousel-images');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            const images = [
+                'https://placehold.co/600x400/007a82/FFFFFF?text=Photo+1',
+                'https://placehold.co/600x400/005f65/FFFFFF?text=Photo+2',
+                'https://placehold.co/600x400/9ca3af/FFFFFF?text=Photo+3'
+            ];
+            let currentImageIndex = 0;
+
+            // Ajoute les images au carrousel
+            images.forEach(src => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.classList.add('w-full', 'h-auto', 'object-cover', 'rounded-lg', 'flex-shrink-0');
+                carouselImages.appendChild(img);
+            });
+
+            // Fonction pour mettre à jour le carrousel
+            const updateCarousel = () => {
+                carouselImages.style.transform = `translateX(-${currentImageIndex * 100}%)`;
+            };
+
+            // Événements pour le carrousel
+            nextBtn.addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                updateCarousel();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                updateCarousel();
+            });
+
+            // Événements pour la modale
+            seminarsCard.addEventListener('click', () => {
+                seminarsModal.classList.remove('hidden');
+                currentImageIndex = 0;
+                updateCarousel();
+            });
+
+            closeModalBtn.addEventListener('click', () => {
+                seminarsModal.classList.add('hidden');
+            });
+
+            // Ferme la modale en cliquant en dehors
+            seminarsModal.addEventListener('click', (e) => {
+                if (e.target.id === 'seminars-modal') {
+                    seminarsModal.classList.add('hidden');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
+
