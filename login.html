@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carnet de voyage du Sud</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .form-container {
+            max-width: 90%;
+            width: 500px;
+        }
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        @keyframes pulse-animation {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 122, 130, 0.4); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 20px rgba(0, 122, 130, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 122, 130, 0); }
+        }
+        .pulse-logo {
+            animation: pulse-animation 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-[#f2f2f2] min-h-screen flex flex-col items-center py-8 px-4">
+
+    <!-- En-tête avec le logo animé et le titre -->
+    <header class="w-full flex flex-col items-center mb-8">
+        <img src="https://www.sudreuniontourisme.fr/fileadmin/user_upload/Sud/Tresors_du_sud/tresor.png" alt="Sud Reunion Tourisme Logo" class="w-32 md:w-48 rounded-full shadow-lg pulse-logo mb-4">
+        <h1 class="text-4xl font-bold text-gray-800 text-center">Carnet de voyage du Sud</h1>
+    </header>
+
+    <main class="w-full flex-grow flex justify-center items-start">
+        <!-- Conteneur principal qui gère l'affichage des différentes vues -->
+        <div id="auth-container" class="form-container bg-white p-6 md:p-10 rounded-lg shadow-xl border border-gray-200">
+            <!-- La vue de connexion/inscription, visible par défaut -->
+            <div id="auth-view">
+                <h2 id="form-title" class="text-3xl font-bold text-center text-gray-800 mb-6">Connexion</h2>
+                <!-- Boutons de basculement -->
+                <div class="flex justify-center mb-6">
+                    <button id="login-tab" class="px-4 py-2 text-sm font-semibold rounded-l-full focus:outline-none transition-colors duration-200 bg-gray-200 text-gray-700">Connexion</button>
+                    <button id="signup-tab" class="px-4 py-2 text-sm font-semibold rounded-r-full focus:outline-none transition-colors duration-200 bg-transparent text-gray-500">Inscription</button>
+                </div>
+                <!-- Formulaire de connexion -->
+                <form id="login-form" class="space-y-4">
+                    <input type="email" id="login-email" placeholder="Email" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007a82]" required>
+                    <input type="password" id="login-password" placeholder="Mot de passe" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007a82]" required>
+                    <button type="submit" class="w-full bg-[#007a82] text-white p-3 rounded-md font-semibold hover:bg-[#005f65] transition-colors duration-200">Se connecter</button>
+                </form>
+                <!-- Formulaire d'inscription -->
+                <form id="signup-form" class="space-y-4 hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" name="nom" placeholder="Nom" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007a82]" required>
+                        <input type="text" name="prenom" placeholder="Prénom" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007a82]" required>
+                    </div>
+                    <input type="email" name="email" id="signup-email" placeholder="Email" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007a82]" required>
+                    <input type="password" name="password" id="signup-password" placeholder="Mot de passe" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007a82]" required>
+                    <input type="tel" name="telephone" placeholder="Téléphone" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007a82]" required>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" name="residence" placeholder="Lieu de résidence permanente" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007a82]" required>
+                        <input type="text" name="code_postal" placeholder="Code postal" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007a82]" required>
+                    </div>
+                    <div class="space-y-4">
+                        <label class="block text-gray-700 font-semibold mt-4">Type de profil :</label>
+                        <div class="flex items-center space-x-4">
+                            <label class="flex items-center">
+                                <input type="radio" name="profil" value="voyageur" class="form-radio text-[#007a82]" checked>
+                                <span class="ml-2 text-gray-700">Voyageur</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="profil" value="professionnel" class="form-radio text-[#007a82]">
+                                <span class="ml-2 text-gray-700">Professionnel</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="voyageur-fields" class="space-y-4">
+                        <label class="block text-gray-700 font-semibold">Je suis intéressé.e par les carnets de voyage et programmes pour les :</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="voyageur_interets[]" value="découvreurs" class="form-checkbox rounded text-[#007a82]">
+                                <span class="ml-2 text-gray-700">Découvreurs</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="voyageur_interets[]" value="excursionnistes" class="form-checkbox rounded text-[#007a82]">
+                                <span class="ml-2 text-gray-700">Excursionnistes</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="voyageur_interets[]" value="passionnés" class="form-checkbox rounded text-[#007a82]">
+                                <span class="ml-2 text-gray-700">Passionnés</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="voyageur_interets[]" value="vacances" class="form-checkbox rounded text-[#007a82]">
+                                <span class="ml-2 text-gray-700">Vacances</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="voyageur_interets[]" value="groupes" class="form-checkbox rounded text-[#007a82]">
+                                <span class="ml-2 text-gray-700">Groupes</span>
+                            </label>
+                        </div>
+                        <label class="block text-gray-700 font-semibold mt-4">Je voyage :</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="voyageur_voyage[]" value="solo" class="form-checkbox rounded text-[#007a82]">
+                                <span class="ml-2 text-gray-700">Solo</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="voyageur_voyage[]" value="en duo" class="form-checkbox rounded text-[#007a82]">
+                                <span class="ml-2 text-gray-700">En duo</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="voyageur_voyage[]" value="en famille" class="form-checkbox rounded text-[#007a82]">
+                                <span class="ml-2 text-gray-700">En famille</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="voyageur_voyage[]" value="en groupe ou tribu" class="form-checkbox rounded text-[#007a82]">
+                                <span class="ml-2 text-gray-700">En groupe ou tribu</span>
+                            </label>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="droit_image" class="form-checkbox rounded text-[#007a82]" required>
+                                <span class="ml-2 text-gray-700 text-sm">Je cède mon droit à l’image et l’utilisation commerciale de mes carnets de voyage, textes, photos et illustrations à DSR.</span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Champs pour profil professionnel -->
+                    <div id="professionnel-fields" class="space-y-4 hidden">
+                        <p class="text-gray-700 text-sm">Je suis une professionnelle ou un professionnel du tourisme, de la culture et des loisirs et je souhaite faire partie de la communauté professionnelle des Voyageuses et voyageurs du SUD.</p>
+                        <div class="mt-4">
+                            <label class="flex items-center">
+                                <input type="checkbox" id="is-also-voyageur" name="is_also_voyageur" class="form-checkbox rounded text-[#007a82]">
+                                <span class="ml-2 text-gray-700 text-sm">Je suis également intéressé.e par le profil voyageur</span>
+                            </label>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="certifie_regle" class="form-checkbox rounded text-[#007a82]" required>
+                                <span class="ml-2 text-gray-700 text-sm">Je certifie être en règle tant pour les diplômes, règlements, inscriptions, assurances et autres certifications associées à mon activité.</span>
+                            </label>
+                        </div>
+                        <label class="block text-gray-700 font-semibold mt-4">Mes activités :</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="activites[]" value="restauration" class="form-checkbox rounded text-[#007a82]">
+                                <span class="ml-2 text-gray-700">Restauration</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="activites[]" value="hébergement" class="form-checkbox rounded text-[#007a82]">
+                                <span class="ml-2 text-gray-700">Hébergement</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="activites[]" value="autres" class="form-checkbox rounded text-[#007a82]">
+                                <span class="ml-2 text-gray-700">Autres</span>
+                            </label>
+                        </div>
+                        <input type="text" name="nom_structure" placeholder="Nom de ma structure" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007a82]">
+                        <textarea name="descriptif_structure" placeholder="Descriptif sommaire de ma structure" rows="3" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007a82]"></textarea>
+                        <input type="text" name="classement_structure" placeholder="Classement éventuel" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007a82]">
+                        <input type="text" name="adresse_structure" placeholder="Adresse" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007a82]">
+                        <input type="url" name="site_web_structure" placeholder="Site internet associé" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007a82]">
+                        <input type="url" name="reseaux_sociaux_structure" placeholder="Réseaux sociaux associés" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007a82]">
+                    </div>
+                    <button type="submit" class="w-full bg-[#007a82] text-white p-3 rounded-md font-semibold hover:bg-[#005f65] transition-colors duration-200">S'inscrire</button>
+                </form>
+                <div id="status-message" class="mt-4 p-3 rounded-md hidden text-center font-medium"></div>
+            </div>
+
+            <!-- La vue du tableau de bord, affichée après connexion/inscription -->
+            <div id="dashboard-view" class="hidden">
+                <h2 class="text-3xl font-bold text-gray-800 text-center mb-4">Bienvenue, <span id="user-display-name">Utilisateur</span> !</h2>
+                <p class="text-gray-600 text-center mb-6">Connecté en tant que: <span id="user-email-display"></span></p>
+                <div class="bg-gray-100 p-6 rounded-lg mb-6">
+                    <p class="text-gray-700 text-lg mb-2">
+                        Bienvenue dans votre espace personnel du **Carnet de voyage du Sud**. Vous pouvez maintenant commencer à créer et organiser vos carnets de voyage.
+                    </p>
+                </div>
+                <button id="logout-button" class="w-full bg-red-600 text-white p-3 rounded-md font-semibold hover:bg-red-700 transition-colors duration-200 mt-4">Déconnexion</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modale pour les séminaires -->
+    <div id="seminar-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-overlay transition-opacity duration-300">
+        <div class="bg-white p-6 md:p-8 rounded-lg shadow-xl max-w-lg w-full relative">
+            <button id="close-modal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 transition-colors duration-200 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">SÉMINAIRES EN COLLECTION</h2>
+            <p class="text-gray-700 text-sm">Dix hôtels proposent des séminaires dont le prix varie entre 50 et 200 euros pour :</p>
+            <ul class="list-disc list-inside mt-2 text-gray-700 text-sm space-y-2">
+                <li>la mise à disposition de salle(s) et équipements (vidéo-projecteur, écran, tableau... climatisation)</li>
+                <li>des boissons et produits locaux (jus de fruit, gâteaux...) servis avec du café, du thé et de l'eau fraîche pour l'accueil et les pauses</li>
+                <li>des prestations proches et négociées par le gestionnaire de la salle pour les repas et activités optionnelles</li>
+            </ul>
+            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mt-6">
+                <div id="seminars-card" class="bg-gray-100 p-4 rounded-lg flex-1 cursor-pointer">
+                    <p class="font-semibold text-gray-800">Entrer en contact</p>
+                    <p class="text-sm text-gray-600 mt-1">avec un conseiller pour construire un programme</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg flex-1">
+                    <p class="font-semibold text-gray-800">Créer un carnet de voyage</p>
+                    <p class="text-sm text-gray-600 mt-1">via l'application</p>
+                </div>
+            </div>
+            <img src="https://www.sudreuniontourisme.fr/fileadmin/_processed_/b/e/csm_logos_d4fab1ce10.png" alt="Logos Partenaires" class="mt-4 mx-auto w-24">
+        </div>
+    </div>
+
+    <!-- Pied de page fixe -->
+    <footer class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-4 text-center text-gray-500 text-xs flex justify-center items-center space-x-2">
+        <span>Destination Sud Réunion © <span id="current-year"></span></span>
+        <img src="https://www.sudreuniontourisme.fr/fileadmin/_processed_/b/e/csm_logos_d4fab1ce10.png" alt="Logos Partenaires" class="h-5">
+    </footer>
+
+    <!-- Script JavaScript -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, onAuthStateChanged, signOut, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Configuration de Firebase (fournie par l'environnement)
+            const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+            const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+            
+            let app;
+            let auth;
+            let db;
+
+            // Élément de l'interface utilisateur
+            const loginTab = document.getElementById('login-tab');
+            const signupTab = document.getElementById('signup-tab');
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const formTitle = document.getElementById('form-title');
+            const authView = document.getElementById('auth-view');
+            const dashboardView = document.getElementById('dashboard-view');
+            const userDisplayName = document.getElementById('user-display-name');
+            const userEmailDisplay = document.getElementById('user-email-display');
+            const logoutButton = document.getElementById('logout-button');
+            const statusMessage = document.getElementById('status-message');
+            const profilRadios = document.querySelectorAll('input[name="profil"]');
+            const voyageurFields = document.getElementById('voyageur-fields');
+            const professionnelFields = document.getElementById('professionnel-fields');
+            const isAlsoVoyageurCheckbox = document.getElementById('is-also-voyageur');
+            const seminarModal = document.getElementById('seminar-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const seminarCard = document.getElementById('seminars-card');
+
+            // Initialisation de Firebase
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                setLogLevel('debug'); // Active le logging pour le débogage de Firestore
+                
+                // Connexion initiale avec le jeton fourni par l'environnement
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+            } catch (error) {
+                console.error("Erreur d'initialisation de Firebase ou de connexion:", error);
+                showStatusMessage('Erreur: Firebase n\'a pas pu être initialisé.', 'bg-red-100 text-red-700');
+            }
+
+            // Affiche un message d'état
+            function showStatusMessage(message, classes) {
+                statusMessage.textContent = message;
+                statusMessage.className = `mt-4 p-3 rounded-md text-center font-medium ${classes}`;
+                statusMessage.classList.remove('hidden');
+            }
+            
+            // Masque le message d'état
+            function hideStatusMessage() {
+                statusMessage.classList.add('hidden');
+            }
+
+            // Gère le basculement entre les formulaires
+            function toggleForms(isLogin) {
+                hideStatusMessage();
+                if (isLogin) {
+                    loginForm.classList.remove('hidden');
+                    signupForm.classList.add('hidden');
+                    loginTab.classList.add('bg-gray-200', 'text-gray-700');
+                    signupTab.classList.remove('bg-gray-200', 'text-gray-700');
+                    formTitle.textContent = 'Connexion';
+                } else {
+                    loginForm.classList.add('hidden');
+                    signupForm.classList.remove('hidden');
+                    signupTab.classList.add('bg-gray-200', 'text-gray-700');
+                    loginTab.classList.remove('bg-gray-200', 'text-gray-700');
+                    formTitle.textContent = "S'inscrire";
+                }
+            }
+
+            loginTab.addEventListener('click', () => toggleForms(true));
+            signupTab.addEventListener('click', () => toggleForms(false));
+
+            profilRadios.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    if (radio.value === 'voyageur') {
+                        voyageurFields.classList.remove('hidden');
+                        professionnelFields.classList.add('hidden');
+                    } else if (radio.value === 'professionnel') {
+                        voyageurFields.classList.add('hidden');
+                        professionnelFields.classList.remove('hidden');
+                        isAlsoVoyageurCheckbox.checked = false;
+                    }
+                });
+            });
+
+            isAlsoVoyageurCheckbox.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    voyageurFields.classList.remove('hidden');
+                } else {
+                    voyageurFields.classList.add('hidden');
+                }
+            });
+
+            // Gère l'ouverture et la fermeture de la modale
+            if (seminarCard) {
+                seminarCard.addEventListener('click', () => {
+                    seminarModal.classList.remove('hidden');
+                    seminarModal.classList.add('flex');
+                });
+            }
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', () => {
+                    seminarModal.classList.remove('flex');
+                    seminarModal.classList.add('hidden');
+                });
+            }
+
+            document.getElementById('current-year').innerText = new Date().getFullYear();
+
+            // Gère la soumission du formulaire d'inscription
+            signupForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                hideStatusMessage();
+
+                const email = document.getElementById('signup-email').value;
+                const password = document.getElementById('signup-password').value;
+
+                if (!email || !password) {
+                    showStatusMessage('Veuillez remplir les champs email et mot de passe.', 'bg-red-100 text-red-700');
+                    return;
+                }
+
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+
+                    const formData = new FormData(signupForm);
+                    const data = {};
+                    const checkedVoyageurInterets = [];
+                    const checkedVoyageurVoyages = [];
+                    const checkedActivites = [];
+                    const profil = formData.get('profil');
+
+                    // Récupère toutes les données du formulaire, y compris les checkboxes non cochées
+                    const inputs = signupForm.querySelectorAll('input, textarea');
+                    inputs.forEach(input => {
+                        const name = input.name;
+                        if (!name) return;
+
+                        if (input.type === 'checkbox') {
+                            if (input.checked) {
+                                if (name === 'droit_image' || name === 'certifie_regle' || name === 'is_also_voyageur') {
+                                    data[name] = true;
+                                } else if (name.endsWith('[]')) {
+                                    if (name === 'voyageur_interets[]') checkedVoyageurInterets.push(input.value);
+                                    if (name === 'voyageur_voyage[]') checkedVoyageurVoyages.push(input.value);
+                                    if (name === 'activites[]') checkedActivites.push(input.value);
+                                }
+                            } else {
+                                if (name === 'droit_image' || name === 'certifie_regle' || name === 'is_also_voyageur') {
+                                    // Pas besoin de faire quoi que ce soit si la checkbox est décochée, car elle n'existe pas dans le formulaire
+                                    // La valeur par défaut sera `false` si nous le voulons
+                                }
+                            }
+                        } else if (input.type !== 'radio') {
+                            data[name] = input.value;
+                        }
+                    });
+                    data['profil'] = profil;
+                    data['voyageur_interets'] = checkedVoyageurInterets;
+                    data['voyageur_voyage'] = checkedVoyageurVoyages;
+                    data['activites'] = checkedActivites;
+
+                    delete data.password; // Ne pas stocker le mot de passe dans Firestore
+
+                    // Chemin Firestore corrigé
+                    const userDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'user-info');
+                    await setDoc(userDocRef, data);
+
+                    showStatusMessage('Inscription réussie ! Connexion en cours...', 'bg-green-100 text-green-700');
+
+                } catch (error) {
+                    console.error('Erreur lors de l\'inscription:', error);
+                    showStatusMessage(`Erreur d'inscription: ${error.message}`, 'bg-red-100 text-red-700');
+                }
+            });
+
+            // Gère la soumission du formulaire de connexion
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                hideStatusMessage();
+
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+
+                if (!email || !password) {
+                    showStatusMessage('Veuillez remplir les champs email et mot de passe.', 'bg-red-100 text-red-700');
+                    return;
+                }
+
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    showStatusMessage('Connexion réussie !', 'bg-green-100 text-green-700');
+                } catch (error) {
+                    console.error('Erreur lors de la connexion:', error);
+                    let message = 'Erreur de connexion.';
+                    if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                        message = 'Email ou mot de passe invalide.';
+                    } else if (error.code === 'auth/invalid-email') {
+                        message = 'Format d\'email invalide.';
+                    }
+                    showStatusMessage(`Erreur de connexion: ${message}`, 'bg-red-100 text-red-700');
+                }
+            });
+
+            // Gère la déconnexion de l'utilisateur
+            logoutButton.addEventListener('click', async () => {
+                await signOut(auth);
+            });
+
+            // Listener pour les changements d'état d'authentification
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    authView.classList.add('hidden');
+                    dashboardView.classList.remove('hidden');
+                    userEmailDisplay.textContent = user.email || 'Anonyme';
+                    userDisplayName.textContent = user.displayName || 'Utilisateur';
+                } else {
+                    authView.classList.remove('hidden');
+                    dashboardView.classList.add('hidden');
+                    toggleForms(true); // Retourne à l'affichage du formulaire de connexion par défaut
+                }
+            });
+        });
+    </script>
+</body>
+</html>
