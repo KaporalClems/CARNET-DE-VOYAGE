@@ -3,269 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carnets de Voyage Destination Sud Réunion</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Chargement...</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome pour les icônes -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            position: relative;
-            overflow: hidden; /* Pour éviter les barres de défilement si la vidéo est plus grande que la fenêtre */
+            background-color: #f2f2f2;
         }
-        #background-video {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translateX(-50%) translateY(-50%);
-            z-index: -1;
-            object-fit: cover;
-        }
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
+        @keyframes pulse-animation {
+            0% {
                 transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(0, 122, 130, 0.4);
             }
+            70% {
+                transform: scale(1.1);
+                box-shadow: 0 0 0 20px rgba(0, 122, 130, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(0, 122, 130, 0);
+            }
+        }
+        .pulse-logo {
+            animation: pulse-animation 2s infinite;
         }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen text-gray-800">
-    <!-- Vidéo en arrière-plan -->
-    <video autoplay muted loop playsinline id="background-video">
-        <source src="https://raw.githubusercontent.com/KaporalClems/CARNET-DE-VOYAGE/af4ed1ca66e4ea71fc722d6cae5c55e6e3a6b153/Destination%20Sud%20Pros%20%202025%20.mp4" type="video/mp4">
-        Votre navigateur ne prend pas en charge la balise vidéo.
-    </video>
+<body class="min-h-screen flex flex-col justify-center items-center">
 
-    <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl max-w-lg w-full text-center transform transition-all duration-300 hover:scale-105">
-        <!-- Logo -->
-        <img src="https://srias.re/wp-content/uploads/2020/12/Destination-Sud-Reunion-png-1-min.png" alt="Destination Sud Réunion Logo" class="mx-auto h-24 mb-6 transition-all duration-300 hover:scale-110">
+    <main class="flex-grow flex justify-center items-center">
+        <!-- Logo avec animation d'impulsion -->
+        <img src="https://www.sudreuniontourisme.fr/fileadmin/user_upload/Sud/Tresors_du_sud/tresor.png" alt="Sud Reunion Tourisme Logo" class="w-48 md:w-64 rounded-full shadow-xl pulse-logo">
+    </main>
 
-        <h1 class="text-3xl font-bold mb-6 text-gray-900">Bienvenue sur Carnets de Voyage</h1>
-        <p class="text-lg text-gray-700 mb-8">
-            Connectez-vous pour explorer le Sud de la Réunion.
-        </p>
-
-        <!-- Boutons de connexion -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <button id="loginBtnVoyageurs" class="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold py-4 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center gap-2">
-                <i class="fas fa-plane"></i>
-                Voyageurs
-            </button>
-            <button id="loginBtnProfessionnel" class="flex-1 bg-gradient-to-r from-green-500 to-teal-600 text-white font-semibold py-4 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50 flex items-center justify-center gap-2">
-                <i class="fas fa-briefcase"></i>
-                Professionnel
-            </button>
-        </div>
-    </div>
-
-    <!-- Fenêtre Modale de Connexion/Inscription -->
-    <div id="loginModal" class="modal-overlay">
-        <div class="modal-content bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md mx-4">
-            <!-- Bouton pour fermer la modale -->
-            <div class="flex justify-end mb-4">
-                <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600 transition-colors">
-                    <i class="fas fa-times text-2xl"></i>
-                </button>
-            </div>
-
-            <!-- Formulaire de Connexion -->
-            <form id="loginForm">
-                <h2 class="text-3xl font-bold mb-6 text-center text-gray-900">Connexion</h2>
-                <div class="mb-5">
-                    <label for="loginEmail" class="block text-gray-700 font-medium mb-2">Adresse email</label>
-                    <input type="email" id="loginEmail" name="email" class="w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors" placeholder="votre@email.com" required>
-                </div>
-                <div class="mb-6 relative">
-                    <label for="loginPassword" class="block text-gray-700 font-medium mb-2">Mot de passe</label>
-                    <input type="password" id="loginPassword" name="password" class="w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors" placeholder="••••••••" required>
-                    <span id="toggleLoginPassword" class="absolute inset-y-0 right-0 top-6 pr-3 flex items-center cursor-pointer text-gray-400 hover:text-gray-600 transition-colors">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                </div>
-                <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 px-6 rounded-full shadow-md hover:bg-indigo-700 transition-colors">
-                    Se connecter
-                </button>
-                <p class="text-center mt-6 text-sm text-gray-600">
-                    Pas encore de compte ? <a href="#" id="showRegisterLink" class="text-indigo-600 font-semibold hover:underline">S'inscrire</a>
-                </p>
-            </form>
-
-            <!-- Formulaire d'Inscription -->
-            <form id="registerForm" class="hidden">
-                <h2 class="text-3xl font-bold mb-6 text-center text-gray-900">Inscription</h2>
-                <div class="mb-5">
-                    <label for="registerEmail" class="block text-gray-700 font-medium mb-2">Adresse email</label>
-                    <input type="email" id="registerEmail" name="email" class="w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors" placeholder="votre@email.com" required>
-                </div>
-                <div class="mb-5 relative">
-                    <label for="registerPassword" class="block text-gray-700 font-medium mb-2">Mot de passe</label>
-                    <input type="password" id="registerPassword" name="password" class="w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors" placeholder="••••••••" required>
-                    <span id="toggleRegisterPassword" class="absolute inset-y-0 right-0 top-6 pr-3 flex items-center cursor-pointer text-gray-400 hover:text-gray-600 transition-colors">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                </div>
-                <div class="mb-6 relative">
-                    <label for="registerConfirmPassword" class="block text-gray-700 font-medium mb-2">Confirmer le mot de passe</label>
-                    <input type="password" id="registerConfirmPassword" name="confirmPassword" class="w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors" placeholder="••••••••" required>
-                    <span id="toggleRegisterConfirmPassword" class="absolute inset-y-0 right-0 top-6 pr-3 flex items-center cursor-pointer text-gray-400 hover:text-gray-600 transition-colors">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                </div>
-                <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 px-6 rounded-full shadow-md hover:bg-indigo-700 transition-colors">
-                    S'enregistrer
-                </button>
-                <p class="text-center mt-6 text-sm text-gray-600">
-                    Déjà un compte ? <a href="#" id="showLoginLink" class="text-indigo-600 font-semibold hover:underline">Se connecter</a>
-                </p>
-            </form>
-        </div>
-    </div>
+    <!-- Pied de page -->
+    <footer class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-4 text-center text-gray-500 text-xs flex justify-center items-center space-x-2">
+        <span>Destination Sud Réunion © <span id="current-year"></span></span>
+        <img src="https://www.sudreuniontourisme.fr/fileadmin/_processed_/b/e/csm_logos_d4fab1ce10.png" alt="Logos Partenaires" class="h-5">
+    </footer>
 
     <script>
-        // Références des éléments du DOM
-        const loginBtnVoyageurs = document.getElementById('loginBtnVoyageurs');
-        const loginBtnProfessionnel = document.getElementById('loginBtnProfessionnel');
-        const loginModal = document.getElementById('loginModal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        const showRegisterLink = document.getElementById('showRegisterLink');
-        const showLoginLink = document.getElementById('showLoginLink');
+        document.addEventListener('DOMContentLoaded', () => {
+            // Redirection après 3 secondes vers la page de connexion
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 3000);
 
-        // Gérer les icônes "voir le mot de passe"
-        function setupPasswordToggle(inputEl, toggleEl) {
-            const icon = toggleEl.querySelector('i');
-            toggleEl.addEventListener('click', function() {
-                if (inputEl.type === 'password') {
-                    inputEl.type = 'text';
-                    icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash');
-                } else {
-                    inputEl.type = 'password';
-                    icon.classList.remove('fa-eye-slash');
-                    icon.classList.add('fa-eye');
-                }
-            });
-        }
-        setupPasswordToggle(document.getElementById('loginPassword'), document.getElementById('toggleLoginPassword'));
-        setupPasswordToggle(document.getElementById('registerPassword'), document.getElementById('toggleRegisterPassword'));
-        setupPasswordToggle(document.getElementById('registerConfirmPassword'), document.getElementById('toggleRegisterConfirmPassword'));
-
-        // Fonctions pour ouvrir et fermer la modale
-        function openModal() {
-            loginModal.style.display = 'flex';
-            // S'assure que le formulaire de connexion est affiché par défaut
-            loginForm.classList.remove('hidden');
-            registerForm.classList.add('hidden');
-        }
-
-        function closeModal() {
-            loginModal.style.display = 'none';
-        }
-
-        // Événements pour ouvrir la modale
-        loginBtnVoyageurs.addEventListener('click', openModal);
-        loginBtnProfessionnel.addEventListener('click', openModal);
-
-        // Événement pour fermer la modale
-        closeModalBtn.addEventListener('click', closeModal);
-        loginModal.addEventListener('click', (e) => {
-            if (e.target.id === 'loginModal') {
-                closeModal();
-            }
-        });
-
-        // Événements pour basculer entre les formulaires
-        showRegisterLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            loginForm.classList.add('hidden');
-            registerForm.classList.remove('hidden');
-        });
-
-        showLoginLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            registerForm.classList.add('hidden');
-            loginForm.classList.remove('hidden');
-        });
-
-        // Gestion de la soumission des formulaires (logique simulée)
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-
-            // --- DEBUT DE L'INTEGRATION SUPABASE ---
-            // C'est ici que vous intégreriez votre logique de connexion Supabase.
-            // Par exemple:
-            // const { user, session, error } = await supabase.auth.signInWithPassword({
-            //     email: email,
-            //     password: password,
-            // })
-            // if (error) {
-            //     console.error("Erreur de connexion:", error.message);
-            // } else {
-            //     console.log("Connexion réussie! Utilisateur:", user);
-            // }
-            // --- FIN DE L'INTEGRATION SUPABASE ---
-            
-            console.log("Soumission du formulaire de connexion simulée avec:");
-            console.log("Email:", email);
-            console.log("Mot de passe:", password);
-        });
-
-        registerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            const confirmPassword = document.getElementById('registerConfirmPassword').value;
-            
-            if (password !== confirmPassword) {
-                console.error("Les mots de passe ne correspondent pas.");
-                return;
-            }
-
-            // --- DEBUT DE L'INTEGRATION SUPABASE ---
-            // C'est ici que vous intégreriez votre logique d'inscription Supabase.
-            // Par exemple:
-            // const { data, error } = await supabase.auth.signUp({
-            //     email: email,
-            //     password: password,
-            // })
-            // if (error) {
-            //     console.error("Erreur d'inscription:", error.message);
-            // } else {
-            //     console.log("Inscription réussie! Vérifiez votre e-mail pour confirmer le compte.");
-            // }
-            // --- FIN DE L'INTEGRATION SUPABASE ---
-
-            console.log("Soumission du formulaire d'inscription simulée avec:");
-            console.log("Email:", email);
-            console.log("Mot de passe:", password);
+            // Met à jour l'année dans le pied de page
+            document.getElementById('current-year').innerText = new Date().getFullYear();
         });
     </script>
 </body>
